@@ -75,6 +75,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'corsheaders', # for 
     'authtools',
     'django_extensions',
     'django_rq',
@@ -104,16 +105,23 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS + EXTENSION_APPS
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'pipeline.middleware.MinifyHTMLMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
 )
 ########## END MIDDLEWARE CONFIGURATION
 
+########## CORS_ORIGIN
+ORS_ORIGIN_ALLOW_ALL = True
 
 ########## MIGRATIONS CONFIGURATION
 MIGRATION_MODULES = {
