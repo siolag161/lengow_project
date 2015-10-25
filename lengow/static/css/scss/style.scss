@@ -1,0 +1,49 @@
+
+.order-list-container {
+  padding-top: 30px;
+}
+
+.order-form {
+  margin-top: 20px;
+}
+
+table { table-layout: fixed; }
+//table th, table td { overflow: hidden; }
+.order-table {
+
+  span.lengow-status-processing {
+    background-color: #f89406;
+  }
+
+  span.lengow-status-cancel {
+    background-color: #777;
+  }
+
+  span.lengow-status-new {
+    background-color: #5bc0de;
+  }
+
+  span.lengow-status-shipped {
+    background-color: #468847;
+  }
+
+  .col-id {
+    width: 10%;
+  }
+
+  .col-date {
+    width: 20%;
+  }
+
+  .col-marketplace {
+    width: 20%;
+  }
+
+  .col-status {
+    width: 10%;
+  }
+
+  .col-quantity {
+    width: 10%;
+  }
+}

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% load order_extras %}
+
+{% block title %}Order Detail - {{ block.super }}{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <h2>Detail for order #{{ order.order_id }}</h2>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12 col-md-3 col-lg-3 pull-left">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Billing Address</div>
+                           <div class="panel-body">
+                                <strong>{{ order.delivery_address.fullname | default_string_value:"NA" }}
+                                    {{ order.delivery_address.email | default_string_value:""}}</strong><br>
+                                {{ order.delivery_address.full_address | default_string_value }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-lg-3">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Status</div>
+                            <div class="panel-body">
+                                <strong>Lengow Status</strong> {{ order.lengow_status | lengow_display_status }}<br>
+                                <strong>Marketplace
+                                    Status:</strong> {{ order.marketplace_status | marketplace_display_status }}<br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-lg-3">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Market place</div>
+                            <div class="panel-body">
+                                <strong>Name:</strong> {{ order.marketplace.name }}<br>
+                                <strong>IdFlux:</strong> {{ order.marketplace.marketplace_id }}<br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-lg-3 pull-right">
+                        <div class="panel panel-default height">
+                            <div class="panel-heading">Shipping Address</div>
+                            <div class="panel-body">
+                                <strong>{{ order.delivery_address.fullname | default_string_value:"NA" }}
+                                    {{ order.delivery_address.email | default_string_value:""}}</strong><br>
+                                {{ order.delivery_address.full_address | default_string_value }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="text-center"><strong>Summary</strong></span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <td><strong>Product</strong></td>
+                                    <td><strong>Category</strong></td>
+                                    <td class="text-center"><strong>Unit Price</strong></td>
+                                    <td class="text-center"><strong>Quantity</strong></td>
+                                    <td class="text-right"><strong>Total Price (HT)</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cart_line in order.cart.all %}
+                                <tr>
+                                    <td>{{ cart_line.product.title }}</td>
+                                    <td class="">{{ cart_line.product.category | truncatechars:30}}</td>
+                                    <td class="text-center">{{ cart_line.unit_price | display_currency_value:order.currency}}</td>
+                                    <td class="text-center">{{ cart_line.quantity }}</td>
+                                    <td class="text-right">{{ cart_line.total_price | display_currency_value:order.currency }}</td>
+                                </tr>
+                                {% endfor %}
+
+                                <tr>
+                                    <td class="highrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="highrow text-center"><strong>Subtotal</strong></td>
+                                    <td class="highrow text-right">{{ order.total_price | display_currency_value:order.currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-center"><strong>Tax</strong></td>
+                                    <td class="emptyrow text-right">{{ order.total_tax | display_currency_value:order.currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-center"><strong>Shipping Fees</strong></td>
+                                    <td class="emptyrow text-right">{{ order.shipping_fees | display_currency_value:order.currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-center"><strong>Commissions Fees</strong></td>
+                                    <td class="emptyrow text-right">{{ order.commission_fees | display_currency_value:order.currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-center"><strong>Processing Fees</strong></td>
+                                    <td class="emptyrow text-right">{{ order.processing_fees | display_currency_value:order.currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"><i class="fa fa-barcode iconbig"></i></td>
+                                    <td class="highrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-center"><strong>Total</strong></td>
+                                    <td class="emptyrow text-right">{{ order.total_amount | display_currency_value:order.currency }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

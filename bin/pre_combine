@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+source bin/common.sh
+
+
+if [ -f bin/install_yuglify ]; then
+    echo "-----> Running install_yuglify"
+    chmod +x bin/install_yuglify
+    bin/install_yuglify
+fi
+
+status "Post-compile done"
+echo

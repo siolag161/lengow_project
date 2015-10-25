@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load order_extras %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}{% endblock title %}
+
+{% block content %}
+    <div class="delete-confirmation">
+        <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Delete confirmation</div>
+                <div class="panel-body">
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        <p>Are you sure you want to delete Order "{{ order.order_id }}"
+                            (from {{ order.marketplace.name }}) </p>
+                        <div class="pull-right">
+
+                            <a href="{{ order.get_absolute_url }}" type="button" class="btn btn-default">View Order</a>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+

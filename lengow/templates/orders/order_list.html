@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load order_extras %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+
+{% block content %}
+
+    <div class="order-list-container">
+       <div class="pull-right">
+           <p><a class="btn btn-primary" href="{% url 'order_create' %}" role="button" ><i class=" fa-plus-circle fa"></i>  Add Order</a></p>
+       </div>
+
+    <table data-toggle="table" class="order-table">
+        <thead>
+        <tr>
+            <th class="col-id">#ID (Hashed)</th>
+            <th class="col-date" data-sortable="true" class="col-date" data-align="center" >#Date</th>
+            <th class="col-marketplace" data-sortable="true" data-align="center" >Marketplace</th>
+            <th class="col-status" data-sortable="true" data-align="center" >Status</th>
+            <th class="col-quantity" data-sortable="true" data-align="right" >Quantity</th>
+            <th class="col-amount" data-sortable="true" data-align="right" >Total Amount</th>
+            <th class="col-action" data-align="center" ></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if orders %}
+            {% for order in orders %}
+                <tr id="tr-{{ order.hashed_id }}" class="">
+                    <td id="td-order.hashed_id" class="">
+                        <span><a href="{{ order.get_absolute_url }} ">{{ order.hashed_id  | truncatechars:15 }}</a></span>
+                    </td>
+                    <td>{{ order.purchase_date }}</td>
+                    <td>{{ order.marketplace.name }}</td>
+                    <td><span class="label lengow-status-{{ order.lengow_status | lengow_display_status }}">
+                        {{ order.lengow_status | lengow_display_status}}</span></td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_amount | display_currency_value:order.currency }}</td>
+                    <td>
+                        <a href="{% url 'order_update' slug=order.hashed_id %}"><span class="fa fa-pencil"></span></a>
+                        <a href="{% url 'order_delete' slug=order.hashed_id %}" class="danger"><span class=" fa fa-trash"></span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    </div>
+
+
+    <div class="container">
+        <div class="order-form">
+            {% crispy form form.helper %}
+        </div>
+    </div>
+
+    <div class="container">
+    {% include "includes/pagination.html" %}
+    </div>
+
+{% endblock content %}
+{% block extra_js %}
+{% endblock extra_js %}

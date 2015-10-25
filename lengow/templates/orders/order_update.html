@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="order-create-form-wrapper">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Update Order #{{ order.order_id }}</h1>
+                <hr/>
+                <div class="well" id="">
+                    {% crispy form form.helper %}
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="product-holder-wrapper">
+                    <ul class="nav nav-pills" role="tablist" id="product-holder">
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
