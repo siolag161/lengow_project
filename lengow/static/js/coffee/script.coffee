@@ -38,18 +38,22 @@ OrderForm.prototype =
     return
 
   submitForm: ->
-    if Object.keys(products).length <= 0
-      e = '<div class="alert alert-danger" role="alert">'
-      e = e + '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'
-      e = e+ '<span class="sr-only">Error:</span>You have to enter at least one product</div>'
-      $('#product-holder').append e
-      return false
+    if $("#update_order_form_id").length >=0
+      console.log 'true that'
+      true
     else
-      for prod, qty of products
-        val = prod + "," + qty
-        input = $('<input>').attr('type', 'hidden').attr('name', 'products').val(val)
-        $("#create_order_form_id").append $(input)
-      return true
+      if Object.keys(products).length <= 0
+        e = '<div class="alert alert-danger" role="alert">'
+        e = e + '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>'
+        e = e+ '<span class="sr-only">Error:</span>You have to enter at least one product</div>'
+        $('#product-holder').append e
+        return false
+      else
+        for prod, qty of products
+          val = prod + "," + qty
+          input = $('<input>').attr('type', 'hidden').attr('name', 'products').val(val)
+          $("#create_order_form_id").append $(input)
+        return true
 
   addProduct: ->
     qty = @$qtyInput.val()

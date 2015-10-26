@@ -87,13 +87,10 @@ class OrderCreateForm(OrderPostForm):
             FormActions(Submit('submit', 'Submit', css_class=''))
         ])
 
-import logging
-logger = logging.getLogger('werkzeug')
-
 
 class OrderUpdateForm(OrderPostForm):
     view_url = 'order_create'
-    form_id = "create_order_frm_id"
+    form_id = "update_order_form_id"
 
     def __init__(self, *args, **kwargs):
         super(OrderUpdateForm, self).__init__(*args, **kwargs)
