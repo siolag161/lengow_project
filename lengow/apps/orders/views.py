@@ -74,9 +74,6 @@ class OrderCreateView(LoginRequiredMixin, SuccessMessageMixin, django.views.gene
         skus = [sku for sku, _ in sku_qtys]
         associated_products = Product.objects.filter(pk__in=skus)
         qtys = [qty for _, qty in sku_qtys]
-        logger.critical(skus)
-        logger.critical(qtys)
-        logger.critical(product_params)
         cart_lines = [CartLine(order=order, product=product, quantity=qty,
                                unit_price=product.unit_price, tax_rate=product.tax_rate)
                       for (product, qty) in zip(associated_products, qtys)]
