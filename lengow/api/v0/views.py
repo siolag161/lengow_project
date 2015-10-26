@@ -53,9 +53,8 @@ class CartLineViewSet(AllowAllMixin, viewsets.ModelViewSet):
             headers = self.get_success_headers(serializer.data)
             return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except IntegrityError as e:
-            res = {"code": status.HTTP_400_BAD_REQUEST, "message": "Bad Requset", "errors" : e.message}
+            res = {"code": status.HTTP_400_BAD_REQUEST, "message": "Bad Requset", "errors": e.message}
             return response.Response(data=json.dumps(res), status=status.HTTP_400_BAD_REQUEST)
-
 
     def destroy(self, request, *args, **kwargs):
         cart_line = self.get_object()

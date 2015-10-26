@@ -75,9 +75,10 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'corsheaders', # for 
-    'authtools',
     'django_extensions',
+    'corsheaders',
+    'authtools',
+    # 'django_extensions',
     'django_rq',
     'crispy_forms',
     'pipeline',
@@ -416,4 +417,9 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     'DEFAULT_VERSION' : '1.0',
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': False,
 }

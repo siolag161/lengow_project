@@ -46,7 +46,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('order_id', models.CharField(default=apps.orders.models.generate_uuid, max_length=32, serialize=False, editable=False, primary_key=True)),
+                ('order_id', models.CharField(default=apps.orders.models.generate_uuid,
+                                              max_length=32, serialize=False, editable=False, primary_key=True)),
                 ('lengow_status', models.IntegerField(default=1)),
                 ('marketplace_status', models.IntegerField(default=1)),
                 ('purchase_date', models.DateTimeField(default=django.utils.timezone.now, editable=False)),

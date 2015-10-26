@@ -47,12 +47,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
 ########## CACHE CONFIGURATION
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': 'localhost:6379:0',
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'localhost:6379:0',
+    }
+}
 ########## END CACHE CONFIGURATION
 
 

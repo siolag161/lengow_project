@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load order_extras %}
+
+{% block content %}
+    <div class="container">
+        <h1>Detail Product</h1>
+        <table id="table-product-{{ product.sku }}" data-toggle="table" class="order-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th> Name</th>
+                <th> Brand</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Tax Rate</th>
+                <th></th>
+            </tr>
+            </thead>
+            % include "products/partials/product.html" %}
+        </table>
+    </div>
+{% endblock %}

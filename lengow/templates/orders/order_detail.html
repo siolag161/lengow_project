@@ -76,7 +76,7 @@
                                 <tbody>
                                 {% for cart_line in order.cart.all %}
                                 <tr>
-                                    <td>{{ cart_line.product.title }}</td>
+                                    <td><a href="{{ cart_line.product.get_absolute_url }}">{{ cart_line.product.title }}</a></td>
                                     <td class="">{{ cart_line.product.category | truncatechars:30}}</td>
                                     <td class="text-center">{{ cart_line.unit_price | display_currency_value:order.currency}}</td>
                                     <td class="text-center">{{ cart_line.quantity }}</td>

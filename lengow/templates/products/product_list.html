@@ -1,0 +1,17 @@
+{% extends "base.html"  %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div id="product_filter_wrapper">
+        <div id="product_list_holder">
+
+        </div>
+        <div class="container">
+            <div class="order-form">
+                {% crispy form form.helper %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

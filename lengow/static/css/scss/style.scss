@@ -47,3 +47,31 @@ table { table-layout: fixed; }
     width: 10%;
   }
 }
+
+html,
+body {
+   height:100%;
+}
+
+.body-wrapper {
+  min-height:100%;
+  position:relative;
+}
+
+.content-wrapper {
+  padding-bottom:100px;
+}
+
+.static-footer {
+  height:100px;
+  padding-top: 60px;
+   position:absolute;
+   bottom:0;
+   left:0;
+   width:100%;
+}
+
+button#id-add-button {
+  margin-top: 25px;
+  margin-left: 20px;
+}

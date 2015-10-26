@@ -1,0 +1,13 @@
+{% load order_extras %}
+
+<tr id="" class="">
+    <td>{{ product.id_lengow }}</td>
+    <td>{{ product.title }}</td>
+    <td>{{ product.brand }}</td>
+    <td>{{ product.category }}</td>
+    <td>{{ product.unit_price }} EUR</td>
+    <td>{{ product.tax_rate }} %</td>
+    <td><img src="{{ product.image_url | get_product_photo_or_default }}" class="img-rounded"
+             alt="" width="40" height="40"></td>
+</tr>
+

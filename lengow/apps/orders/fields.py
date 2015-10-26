@@ -3,8 +3,8 @@ from django_enumfield import enum
 
 class OrderStatus(enum.Enum):
     @classmethod
-    def invert_label(cls, str):
-        return cls.inverted_labels.get(str, 0)
+    def invert_label(cls, s):
+        return cls.inverted_labels.get(s, 0)
 
 
 class MarketplaceStatus(OrderStatus):
@@ -18,7 +18,7 @@ class MarketplaceStatus(OrderStatus):
         ACCEPT: 'accept'
     }
 
-    inverted_labels = { v: k for k, v in labels.iteritems() }
+    inverted_labels = {v: k for k, v in labels.iteritems()}
 
 
 class LengowStatus(OrderStatus):

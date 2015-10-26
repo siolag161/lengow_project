@@ -20,8 +20,8 @@
     <![endif]-->
   </head>
   <body>
-
-    <div class="container">
+  <div class="body-wrapper">
+      <div class="container content-wrapper">
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -52,8 +52,6 @@
       </nav>
 
 
-
-
       {% block header %}
         <h1>{% block page_title %}{% endblock page_title %}</h1>
       {% endblock header %}
@@ -67,25 +65,25 @@
 
     </div>
 
-    <footer class="navbar  navbar-fixed-bottom">
-        <div class="container">
+        <div class="footer static-footer">
+            <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="copyright">Copyright &copy; Lengow 2015</span>
+                    <span class="copyright">Copyright &copy; <a href="http://www.lengow.fr/">Lengow</a> 2015</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        <li><a href="https://twitter.com/lengow"><i class="fa fa-twitter"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        <li><a href="https://www.facebook.com/Lengow"><i class="fa fa-facebook"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        <li><a href="https://www.linkedin.com/company/lengow"><i class="fa fa-linkedin"></i></a>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
-                        <li><a href="#">API</a>
+                        <li><a href="/api/">API</a>
                         </li>
                         <li><a href="#">Privacy Policy</a>
                         </li>
@@ -95,14 +93,15 @@
                 </div>
             </div>
         </div>
-    </footer>
+        </div>
 
+
+  </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/bootstrap-table.min.js"></script>
     {% javascript 'master' %}
     {% block extra_js %}{% endblock extra_js %}
-
 
   </body>
 </html>

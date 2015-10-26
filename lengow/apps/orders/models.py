@@ -1,16 +1,14 @@
 # -*- coding: UTF-8 -*-
 
 import shortuuid
+from decimal import Decimal
 
+from django.utils.encoding import (python_2_unicode_compatible,)
 from django.db import models
 from django_enumfield import enum
-from django.db.models.signals import post_save, post_init
 from django.utils import timezone
 
-
-from decimal import Decimal
 from .fields import (MarketplaceStatus, LengowStatus)
-from django.utils.encoding import (python_2_unicode_compatible, smart_text)
 
 import logging
 logger = logging.getLogger('werkzeug')
@@ -24,16 +22,16 @@ def hash_string(val):
 def generate_uuid():
     return shortuuid.uuid()
 
+
 @python_2_unicode_compatible
 class Order(models.Model):
     """
     The idea is that the information of this model depends on t
     """
-    order_id = models.CharField(max_length=32, primary_key=True, editable=False, default=generate_uuid)  # for now generated automatically
+    order_id = models.CharField(max_length=32, primary_key=True, editable=False, default=generate_uuid)
     lengow_status = enum.EnumField(LengowStatus, default=LengowStatus.NEW)
     marketplace_status = enum.EnumField(MarketplaceStatus, default=MarketplaceStatus.VALIDATED_FIANET)
     purchase_date = models.DateTimeField(default=timezone.now, editable=False, )
-    total_tax = models.DecimalField(max_digits=20, decimal_places=4, editable=False, default=Decimal(0.0))
     shipping_fees = models.DecimalField(max_digits=20, decimal_places=4,  default=Decimal(0.0))
     commission_fees = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0))
     processing_fees = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0))
@@ -43,11 +41,14 @@ class Order(models.Model):
     hashed_id = models.SlugField(max_length=32, unique=True, editable=False, default=generate_uuid)
 
     #  denormalization
-    total_price = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0, ), editable=False,)  # easier for filtering
-    total_tax = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0), editable=False,)  # easier for filtering
+    total_price = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0, ),
+                                      editable=False,)  # easier for filtering
+    total_tax = models.DecimalField(max_digits=20, decimal_places=4, default=Decimal(0.0),
+                                    editable=False,)  # easier for filtering
+
     quantity = models.IntegerField(default=0, editable=False,)  # easier for filtering
 
-    def add_product(self, product, quantity, save=False):  # assumes quantity > 0,
+    def add_product(self, product, quantity):  # assumes quantity > 0,
         """
         very naive way to do
         """
@@ -64,11 +65,11 @@ class Order(models.Model):
             cartline.quantity = quantity
 
         self.total_price += price
-        self.total_tax += cartline.tax_rate*price
+        self.total_tax += tax
         self.quantity += quantity
         cartline.save()
 
-    def remove_product(self, product, q, save=False):
+    def remove_product(self, product, q):
         if q <= 0:
             return
 
@@ -83,7 +84,7 @@ class Order(models.Model):
             cartline.save()
 
     def __str__(self):
-        return u"%s-%s" %(self.delivery_address, self.order_id)
+        return u"%s-%s" % (self.delivery_address, self.order_id)
 
     def compute_total_tax_from_carts(self):
         items = self.cart.all()
@@ -104,7 +105,6 @@ class Order(models.Model):
         self.compute_total_tax_from_carts()
         self.compute_quantity_from_carts()
         self.compute_total_price_from_carts()
-        print '%s - %s - %s' %(self.total_price, self.total_tax, self.quantity)
 
     @property
     def total_amount(self):
@@ -153,6 +153,10 @@ class Product(models.Model):
     def __str__(self):
         elems = [self.title, self.brand, self.category]
         return u" ".join(elem for elem in elems if elem)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return 'product_detail', (), {'slug': self.id_lengow}
 
 
 @python_2_unicode_compatible

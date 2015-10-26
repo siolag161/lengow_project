@@ -1,0 +1,21 @@
+<div class="container">
+    <h1>Product Lists</h1>
+    <table id="table-product-{{ product.sku }}" data-toggle="table" class="order-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th> Name</th>
+            <th> Brand</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Tax Rate</th>
+            <th></th>
+        </tr>
+        </thead>
+        {% if products %}
+            {% for product in products %}
+                {% include "products/partials/product.html" %}
+            {% endfor %}
+        {% endif %}
+    </table>
+</div>

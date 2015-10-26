@@ -1,17 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-
-# Unregister Groups model which is not used
-admin.site.unregister(Group)
+from .models import User
 
 from authtools.admin import StrippedUserAdmin
 from authtools.admin import BASE_FIELDS, DATE_FIELDS, SIMPLE_PERMISSION_FIELDS
 
-from .models import User
+
+admin.site.unregister(Group)
 
 
 class UserAdmin(StrippedUserAdmin):
-    list_display = ('is_active', 'name', 'email', 'date_joined', 'last_login', 'is_superuser', 'is_staff')
+    list_display = ('is_active', 'name', 'email', 'date_joined',
+                    'last_login', 'is_superuser', 'is_staff')
     list_display_links = ('name', 'email')
 
     search_fields = ('name', 'email')
@@ -22,5 +22,6 @@ class UserAdmin(StrippedUserAdmin):
         DATE_FIELDS,
         SIMPLE_PERMISSION_FIELDS,
     )
+
 
 admin.site.register(User, UserAdmin)

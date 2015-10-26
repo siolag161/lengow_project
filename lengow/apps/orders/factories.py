@@ -38,7 +38,7 @@ class CartLineFactory(DjangoModelFactory):
     class Meta:
         model = CartLine
 
-    quantity = Sequence(lambda n : (n+1))
+    quantity = Sequence(lambda n: (n+1))
     product = SubFactory(ProductFactory)
     order = SubFactory(CartLine)
 
@@ -46,8 +46,9 @@ class CartLineFactory(DjangoModelFactory):
 class MarketPlaceFactory(DjangoModelFactory):
     class Meta:
         model = MarketPlace
-    name = Sequence(lambda n: "super-shop-%d" %(n))
-    marketplace_id = Sequence(lambda n: "mk-id-%d" %(n))
+    name = Sequence(lambda n: "super-shop-%d" % n)
+    marketplace_id = Sequence(lambda n: "mk-id-%d" % n)
+
 
 class OrderFactory(DjangoModelFactory):
     class Meta:

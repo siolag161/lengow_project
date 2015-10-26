@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+from braces.views import LoginRequiredMixin
 import django.views.generic
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse_lazy
@@ -7,6 +8,7 @@ from django.contrib import messages
 
 from .models import (Order, CartLine, Product)
 from .forms import (OrderFilterForm, OrderCreateForm, OrderUpdateForm)
+from .forms import ProductSearchForm
 
 
 class OrderListView(django.views.generic.ListView):
@@ -22,7 +24,7 @@ class OrderListView(django.views.generic.ListView):
         return qs.order_by('-purchase_date')
 
     @staticmethod
-    def get_filtered_queryset(qs, form): # @todo prefetch & stuff
+    def get_filtered_queryset(qs, form):  # @todo prefetch & stuff
         mk = form.cleaned_data.get('marketplace', None)
         if mk:
             qs = qs.filter(marketplace=mk)
@@ -45,7 +47,7 @@ class OrderDetailView(django.views.generic.DetailView):
     context_object_name = 'order'
 
 
-class OrderDeleteView(django.views.generic.DeleteView):
+class OrderDeleteView(LoginRequiredMixin, django.views.generic.DeleteView):
     slug_field = 'hashed_id'
     success_message = 'Deleted Successfully'
     model = Order
@@ -54,10 +56,11 @@ class OrderDeleteView(django.views.generic.DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
-        return super(django.views.generic.DeleteView, self).delete(request, *args, **kwargs)
+        return super(django.views.generic.DeleteView, self) \
+            .delete(request, *args, **kwargs)
 
 
-class OrderCreateView(SuccessMessageMixin, django.views.generic.CreateView):
+class OrderCreateView(LoginRequiredMixin, SuccessMessageMixin, django.views.generic.CreateView):
     model = Order
     success_message = 'New Order Created Successfully'
     success_url = reverse_lazy('order-list')
@@ -70,11 +73,17 @@ class OrderCreateView(SuccessMessageMixin, django.views.generic.CreateView):
         sku_qtys = self.__retrieve_product_quantity(product_params)
         skus = [sku for sku, _ in sku_qtys]
         associated_products = Product.objects.filter(pk__in=skus)
-        qtys = (qty for _, qty in sku_qtys)
+        qtys = [qty for _, qty in sku_qtys]
+        logger.critical(skus)
+        logger.critical(qtys)
+        logger.critical(product_params)
         cart_lines = [CartLine(order=order, product=product, quantity=qty,
                                unit_price=product.unit_price, tax_rate=product.tax_rate)
                       for (product, qty) in zip(associated_products, qtys)]
         CartLine.objects.bulk_create(cart_lines)
+        order.update_values_according_to_cart()
+        order.save()
+
         return super(OrderCreateView, self).form_valid(form)
 
     @classmethod
@@ -97,7 +106,7 @@ class OrderCreateView(SuccessMessageMixin, django.views.generic.CreateView):
         return [(sku, int(qty)) for (sku, qty) in sku_qtys]
 
 
-class OrderUpdateView(SuccessMessageMixin, django.views.generic.UpdateView):
+class OrderUpdateView(LoginRequiredMixin, SuccessMessageMixin, django.views.generic.UpdateView):
     model = Order
     success_message = 'Order Updated Successfully'
     success_url = reverse_lazy('order-list')
@@ -105,3 +114,21 @@ class OrderUpdateView(SuccessMessageMixin, django.views.generic.UpdateView):
     template_name = 'orders/order_update.html'
     slug_field = 'hashed_id'
     context_object_name = 'order'
+
+
+class ProductDetailView(django.views.generic.DetailView):
+    model = Product
+    template_name = 'products/product_detail.html'
+    context_object_name = 'product'
+    slug_field = 'id_lengow'
+
+
+
+class ProductListView(django.views.generic.TemplateView):
+    template_name = 'products/product_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context.update(**kwargs)
+        context['form'] = ProductSearchForm()
+        return context

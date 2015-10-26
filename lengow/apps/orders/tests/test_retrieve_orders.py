@@ -7,8 +7,8 @@ from django.test import TestCase
 
 from ..models import (Address, Product, MarketPlace, Order, CartLine)
 from ..fields import (MarketplaceStatus, LengowStatus)
-from ..utils import LengowOrderXMLParser as XMLParser
-from ..factories import (ProductFactory, CartLineFactory, OrderFactory)
+from ..tasks import LengowOrderXMLParser as XMLParser
+from ..factories import (OrderFactory)
 
 
 class TestRetrieveXML(TestCase):
@@ -151,7 +151,9 @@ class TestRetrieveXML(TestCase):
         self.assertEqual(cartline.total_price, Decimal(110))
         self.assertEqual(prod.pk, cartline.product.pk)
         self.assertEqual(order.pk, cartline.order.pk)
-        self.assertEqual(cartline.product.image_url, "http://csimg.webmarchand.com/srv/FR/29049962bos7121v342010/T/340x340/C/FFFFFF/url/jeans-femme-slim-sofia-bonobo.jpg")
+        self.assertEqual(cartline.product.image_url,
+                         "http://csimg.webmarchand.com/srv/FR/29049962bos7121v342010/T/340x340/C/FFFFFF/"
+                         "url/jeans-femme-slim-sofia-bonobo.jpg")
 
         cart_line_given_order = XMLParser.get_cart_line_for_order(order_dict)
         self.assertEqual(len(cart_line_given_order), 1)

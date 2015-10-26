@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.test import TestCase
 
 from ..models import (Address, Product, CartLine, Order, MarketPlace, hash_string)
-from ..fields import (MarketplaceStatus, LengowStatus)
+from ..fields import (MarketplaceStatus, )
 
 from ..factories import (AddressFactory, ProductFactory, CartLineFactory, OrderFactory, MarketPlaceFactory)
 
@@ -112,11 +112,11 @@ class OrderTestCase(TestCase):
         self.assertEqual(self.order.quantity, 3)
 
         o = Order.objects.get(pk=self.order.pk)
-        self.assertEqual(o.quantity, 0) # not yet updated
+        self.assertEqual(o.quantity, 0)  # not yet updated
         self.order.save()
 
         o = Order.objects.get(pk=self.order.pk)
-        self.assertEqual(o.quantity, 3) # not yet updated
+        self.assertEqual(o.quantity, 3)  # not yet updated
 
         self.order.add_product(self.products[1], 21)
         self.order.save()
@@ -136,7 +136,7 @@ class OrderTestCase(TestCase):
         o = Order.objects.get(pk=self.order.pk)
         self.assertEqual(o.quantity, 2)
 
-        self.order.remove_product(self.products[0], 2, save=0)
+        self.order.remove_product(self.products[0], 2)
         self.order.save()
         o = Order.objects.get(pk=self.order.pk)
         self.assertEqual(o.quantity, 0)
@@ -144,5 +144,5 @@ class OrderTestCase(TestCase):
 
 class MarketPlaceTestCase(TestCase):
     def test_create(self):
-        mk = MarketPlaceFactory.create(name="amazon")
+        MarketPlaceFactory.create(name="amazon")
         self.assertEqual(MarketPlace.objects.count(), 1)
